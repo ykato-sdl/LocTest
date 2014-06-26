@@ -20,13 +20,13 @@ public class MainActivity extends Activity implements LocationListener,
 
     private final static String TAG = "MainActivity";
 
-    private LocationClient locationClient;
     private TextView latitudeView, longitudeView, accuracyView;
     private Button startStopButton;
-    
-    private boolean isUpdating;
-    private LocationRequest locationRequest;
 
+    private LocationRequest locationRequest;
+    private LocationClient locationClient;
+    private boolean isUpdatingLocation;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,15 +37,13 @@ public class MainActivity extends Activity implements LocationListener,
         longitudeView = (TextView) findViewById(R.id.longitude_view);
         accuracyView = (TextView) findViewById(R.id.accuracy_view);
         startStopButton = (Button) findViewById(R.id.start_stop_button);
-        
-        isUpdating = false;
-        
+
         locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationRequest.setInterval(5 * 1000); // 5 sec.
         locationRequest.setFastestInterval(1 * 1000); // 1 sec.
-
         locationClient = new LocationClient(this, this, this);
+        isUpdatingLocation = false;
     }
 
     @Override
@@ -85,26 +83,26 @@ public class MainActivity extends Activity implements LocationListener,
     public void onLocationChanged(Location arg0) {
         showLocation();
     }
-    
+
     public void onClickStartStopButton(View view) {
-        if (!isUpdating)
+        if (!isUpdatingLocation)
             startPeriodicUpdate();
         else
             stopPeriodicUpdate();
     }
-    
+
     private void startPeriodicUpdate() {
-        isUpdating = true;
+        isUpdatingLocation = true;
         startStopButton.setText(getString(R.string.start_stop_button_stop_label));
         locationClient.requestLocationUpdates(locationRequest, this);
     }
-    
+
     private void stopPeriodicUpdate() {
-        isUpdating = false;
+        isUpdatingLocation = false;
         startStopButton.setText(getString(R.string.start_stop_button_start_label));
         locationClient.removeLocationUpdates(this);
     }
-    
+
     private void showLocation() {
         Location loc = locationClient.getLastLocation();
         if (loc != null) {
