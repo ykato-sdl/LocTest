@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">LocTest</string>
+    <string name="latitude_label">Latitude</string>
+    <string name="longitude_label">Longitude</string>
+    <string name="accuracy_label">Accuracy</string>
+    <string name="start_stop_button_start_label">Start</string>
+    <string name="start_stop_button_stop_label">Stop</string>
+    <string name="initial_value">0</string>
+
+</resources>
